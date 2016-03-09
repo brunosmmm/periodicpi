@@ -1,0 +1,3 @@
+[submodule "wifitools"]
+	path = wifitools
+	url = git@bitbucket.org:brunosmmm/wifitools.git
