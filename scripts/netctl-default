@@ -1,0 +1,5 @@
+Description='Default wi-fi profile'
+Interface=wlan0
+Connection=wireless
+IP=dhcp
+ESSID=__SSID_PLACEHOLDER__
