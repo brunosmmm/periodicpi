@@ -1,7 +1,8 @@
 #!/bin/sh
 
-source /usr/share/periodicpi/scripts/envsetup.sh
-source /usr/share/periodicpi/scripts/helpers.sh
+#load stuff
+source ./envsetup.sh
+source ./helpers.sh
 
 #log messages easily
 function log {
