@@ -11,7 +11,7 @@ class ScanWifi(object):
     def __init__(self):
         self.stdin_path = '/dev/null'
         self.stdout_path = '/dev/null'
-        self.stdout_path = '/dev/null'
+        self.stderr_path = '/dev/null'
         self.pidfile_path = '/tmp/pwifi.pid'
         self.pidfile_timeout = 5
 
