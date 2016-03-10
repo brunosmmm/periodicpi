@@ -24,7 +24,7 @@ def get_periodic_config_mode():
 def read_wifi_list():
 
     with open('/var/lib/periodicpi/wifi_scan.json', 'r') as scan_json:
-        scan_results = json.load(scan_json, cls=WifiInfoDecoder)
+        scan_results = json.load(scan_json)
         return scan_results
 
     return None
@@ -35,6 +35,9 @@ def index():
     scan_results = read_wifi_list()
     if scan_results == None:
         wifi_list = []
+    else:
+        wifi_list = [WifiInfo.from_dict(x) for x in scan_results['wifi_list']]
+        
     return dict(scanlist=wifi_list, configmode=periodic_config_mode)
 
 APP_ROOT = os.path.abspath(os.path.dirname(__file__))
