@@ -7,5 +7,5 @@ function extract_config  {
 
 #log with systemd, argument 1 is message, argument 2 is origin
 function systemd_log {
-    echo $1 | systemd-cat -t $2
+    echo "$1" | systemd-cat -t "$2"
 }

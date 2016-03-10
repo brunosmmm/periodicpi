@@ -5,7 +5,7 @@ source /usr/share/periodicpi/scripts/helpers.sh
 
 #log messages easily
 function log {
-    systemd_log $1 periodicpi-init
+    systemd_log "$1" periodicpi-init
 }
 
 #starting
