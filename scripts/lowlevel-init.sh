@@ -5,6 +5,8 @@ source /usr/share/periodicpi/scripts/helpers.sh
 
 #get config gpio num from configuration
 config_gpio_num=$(extract_config $CONFIG_PATH/init.json config_gpio)
+#get gpio active polarity
+gpio_active_value=$(extract_config $CONFIG_PATH/init.json gpio_active_value)
 
 #check if gpio is already exported
 if [ ! -f /sys/class/gpio/gpio$config_gpio_num/value ];
@@ -19,7 +21,7 @@ sleep 1
 
 #read GPIO status
 gpio_val=$(cat /sys/class/gpio/gpio$config_gpio_num/value)
-if [ $gpio_val == "0" ];
+if [ $gpio_val == $gpio_active_value ];
 then
     echo 'Configuration mode is set, initializing AP' | systemd-cat -t periodicpi-init
     $SCRIPT_PATH/enableap.sh
