@@ -2,6 +2,7 @@ import bottle
 import os
 from bottle import route, run, view
 import json
+from periodicpy.wifitools.wifiinfo import WifiInfoDecoder, WifiInfo
 
 class ConfigReadError(Exception):
     pass
@@ -20,10 +21,21 @@ def get_periodic_config_mode():
     except KeyError:
         raise ConfigReadError('Invalid configuration file')
 
+def read_wifi_list():
+
+    with open('/var/lib/periodicpi/wifi_scan.json', 'r') as scan_json:
+        scan_results = json.load(scan_json, cls=WifiInfoDecoder)
+        return scan_results
+
+    return None
+
 @route('/')
 @view('index')
 def index():
-    return dict(scanlist=[], configmode=periodic_config_mode)
+    scan_results = read_wifi_list()
+    if scan_results == None:
+        wifi_list = []
+    return dict(scanlist=wifi_list, configmode=periodic_config_mode)
 
 APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 bottle.TEMPLATE_PATH.append(os.path.join(APP_ROOT, 'templates'))
