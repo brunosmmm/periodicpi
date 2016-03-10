@@ -55,7 +55,7 @@ class ScanWifi(object):
             scan_results = scan_and_parse('wlan0', True)
 
             with open(self.scan_file, 'w') as scan_json:
-                scan_json.write(json.dumps(scan_results, cls=WifiInfoEncoder))
+                json.dump({'timestamp' : time.time(), 'wifi_list' : scan_results}, cls=WifiInfoEncoder, fp=scan_json)
 
             time.sleep(self.scan_interval)
 
