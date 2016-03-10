@@ -44,6 +44,7 @@ class ScanWifi(object):
             config = json.loads(f.read())
             self.scan_file = config['scan_file']
             self.scan_interval = int(config['interval'])
+            self.interface = config['interface']
         except IOError:
             self.logger.warn('Failed to open configuration file: {}'.format(DEFAULT_CONFIG_FILE))
         except Exception:
@@ -52,10 +53,10 @@ class ScanWifi(object):
         self.logger.info('Started scanning...')
 
         while True:
-            scan_results = scan_and_parse('wlan0', True)
+            scan_results = scan_and_parse(self.interface, True)
 
             with open(self.scan_file, 'w') as scan_json:
-                json.dump({'timestamp' : time.time(), 'wifi_list' : scan_results}, cls=WifiInfoEncoder, fp=scan_json)
+                json.dump({'interface' : self.interface, 'timestamp' : time.time(), 'wifi_list' : scan_results}, cls=WifiInfoEncoder, fp=scan_json)
 
             time.sleep(self.scan_interval)
 
