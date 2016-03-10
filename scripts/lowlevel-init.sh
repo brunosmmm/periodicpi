@@ -3,6 +3,14 @@
 source /usr/share/periodicpi/scripts/envsetup.sh
 source /usr/share/periodicpi/scripts/helpers.sh
 
+#log messages easily
+function log {
+    systemd_log $1 periodicpi-init
+}
+
+#starting
+log 'Starting low-level initialization'
+
 #get config gpio num from configuration
 config_gpio_num=$(extract_config $CONFIG_PATH/init.json config_gpio)
 #get gpio active polarity
@@ -13,7 +21,9 @@ if [ ! -f /sys/class/gpio/gpio$config_gpio_num/value ];
 then
     #export config mode force gpio
     echo $config_gpio_num > /sys/class/gpio/export
-    echo 'Exporting GPIO '$config_gpio_num | systemd-cat -t periodicpi-init
+    log 'Exporting GPIO '$config_gpio_num
+else
+    log 'GPIO '$config_gpio_num' already exported'
 fi
 
 #wait
@@ -23,10 +33,10 @@ sleep 1
 gpio_val=$(cat /sys/class/gpio/gpio$config_gpio_num/value)
 if [ $gpio_val == $gpio_active_value ];
 then
-    echo 'Configuration mode is set, initializing AP' | systemd-cat -t periodicpi-init
+    log 'Configuration mode is set, initializing AP'
     $SCRIPT_PATH/enableap.sh
     echo '{ "config_mode" : true }' > /var/lib/periodicpi/config_status.json
 else
-    echo 'Configuration mode not set, normal initialization' | systemd-cat -t periodicpi-init
+    log 'Configuration mode not set, normal initialization'
     echo '{ "config_mode" : false }' > /var/lib/periodicpi/config_status.json
 fi
