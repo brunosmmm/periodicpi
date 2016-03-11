@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./envsetup.sh
+source $PERIODIC_SCRIPT_PATH/envsetup.sh
 
 #run first boot tasks
 $SCRIPT_PATH/hostapd-make.sh

@@ -1,8 +1,8 @@
 #!/bin/sh
 
 #load stuff
-source ./envsetup.sh
-source ./helpers.sh
+source $PERIODIC_SCRIPT_PATH/envsetup.sh
+source $PERIODIC_SCRIPT_PATH/helpers.sh
 
 #log messages easily
 function log {

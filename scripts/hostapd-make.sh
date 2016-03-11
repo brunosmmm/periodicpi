@@ -1,7 +1,7 @@
 #!/bin/sh
 
-source ./helpers.sh
-source ./envsetup.sh
+source $PERIODIC_SCRIPT_PATH/helpers.sh
+source $PERIODIC_SCRIPT_PATH/envsetup.sh
 
 #get hostname
 HOST=$(extract_config $CONFIG_PATH/initial_setup.json hostname)

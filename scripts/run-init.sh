@@ -1,7 +1,7 @@
 #!/bin/sh
 
-source ./envsetup.sh
-source ./helpers.sh
+source $PERIODIC_SCRIPT_PATH/envsetup.sh
+source $PERIODIC_SCRIPT_PATH/helpers.sh
 
 function log {
     systemd_log "$1" periodicpi-run
