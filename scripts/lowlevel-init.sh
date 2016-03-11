@@ -49,7 +49,9 @@ if [ $remote_enabled == "True" ];
 then
     log 'IR output enbled, loading modules'
     #get IR output GPIO
-    ir_out_gpio=$(extract_config $CONFIG_PATH/init.json ir_out_gpio)
-    modprobe lirc_dev
-    modprobe lirc_rpi gpio_out_pin=$ir_out_gpio
+    #ir_out_gpio=$(extract_config $CONFIG_PATH/init.json ir_out_gpio)
+    #modprobe lirc_dev
+    #modprobe lirc_rpi gpio_out_pin=$ir_out_gpio
+    #start lircd
+    systemctl start lircd
 fi
