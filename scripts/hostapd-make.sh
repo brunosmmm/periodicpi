@@ -11,5 +11,4 @@ sed_cmd="s/__SSID_PLACEHOLDER__/"$HOST"-config/g"
 sed $sed_cmd hostapd.conf > /etc/hostapd/hostapd.conf
 
 #set hostname temporarily and permanently
-hostname $HOST
-echo $HOST > /etc/hostname
+hostnamectl set-hostname $HOST
