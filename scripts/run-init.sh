@@ -22,3 +22,17 @@ then
         log 'Success'
     fi
 fi
+
+lircd_state=$(extract_config $CONFIG_PATH/services.json lircd)
+
+if [ $lircd_state == "True" ];
+then
+    log 'Starting lircd...'
+    lircd_init=$(systemctl start lircd)
+    if [ ! $lircd_init == 0 ];
+    then
+        log 'Failed starting'
+    else
+        log 'Success'
+    fi
+fi
