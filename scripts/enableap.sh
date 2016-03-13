@@ -26,7 +26,7 @@ systemctl start dnsmasq.service
 systemctl start hostapd.service
 
 #start web server
-systemctl start lighttpd.service
+#systemctl start lighttpd.service
 
 #scan for wi-fi continuously
 python2 ../tools/wifiscantool.py start
