@@ -7,4 +7,5 @@ source $PERIODIC_SCRIPT_PATH/helpers.sh
 python2 $PERIODIC_SCRIPT_PATH/../tools/node_init.py
 
 #announce services
-python2 $PERIODIC_SCRIPT_PATH/../tools/publish_services.py start
+#python2 $PERIODIC_SCRIPT_PATH/../tools/publish_services.py start
+

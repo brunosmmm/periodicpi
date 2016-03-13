@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+
 from daemon import runner
 import json
 import avahi
@@ -66,6 +68,8 @@ class Announcer(object):
             for service in self.services:
                 service.unpublish()
 
+            exit(0)
+
         #read configuration files, get services
         self.service_dict = []
         self.services = []
@@ -95,3 +99,4 @@ class Announcer(object):
 app = Announcer()
 daemon_runner = runner.DaemonRunner(app)
 daemon_runner.do_action()
+
