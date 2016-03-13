@@ -87,7 +87,7 @@ class Announcer(object):
 
         #do nothing!
         while True:
-            time.sleep(0.1)
+            time.sleep(1)
 
 app = Announcer()
 daemon_runner = runner.DaemonRunner(app)
