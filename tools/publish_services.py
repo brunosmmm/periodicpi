@@ -4,6 +4,7 @@ import avahi
 import dbus
 import signal
 import time
+from periodicpy.systemd.logging import log
 
 DEFAULT_CONFIG_FILE = '/etc/periodicpi/announce.json'
 
@@ -59,6 +60,7 @@ class Announcer(object):
 
     def run(self):
 
+        log('publishing services', 'periodic-publish')
         #handle SIGTERM
         def _handle_signal(signum, frame):
             for service in self.services:
@@ -80,6 +82,7 @@ class Announcer(object):
         #announce services
         for service in self.service_dict:
             if service['enabled']:
+                log('publishing {}'.format(service['name']), 'periodic-publish')
                 avahi_service = ZeroconfService(name=service['name'], port=int(service['port']),
                                                 stype=service['type'])
                 avahi_service.publish()
