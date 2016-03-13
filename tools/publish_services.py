@@ -54,6 +54,9 @@ class Announcer(object):
         self.pidfile_path = '/tmp/ppannounce.pid'
         self.pidfile_timeout = 5
 
+        self.services = []
+        self.service_dict = []
+
     def run(self):
 
         #handle SIGTERM
@@ -68,6 +71,8 @@ class Announcer(object):
             f = open(DEFAULT_CONFIG_FILE, 'r')
             config = json.load(f)
             self.service_dict = config['services']
+        except IOError:
+            return
 
         #configure signal handler
         signal.signal(signal.SIGTERM, _handle_signal)
