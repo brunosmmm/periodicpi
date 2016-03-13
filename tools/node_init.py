@@ -1,7 +1,7 @@
 import json
 import subprocess
 from periodicpy.systemd.logging import log
-from periodicpy.systemd.control import start_service, ServiceStartStopError
+from periodicpy.systemd.control import start_service, ServiceStartstopError
 
 CONFIGURATION_PATH = '/etc/periodicpi'
 
