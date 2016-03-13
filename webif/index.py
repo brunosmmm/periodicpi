@@ -4,6 +4,8 @@ from bottle import route, run, view
 import json
 from periodicpy.wifitools.wifiinfo import WifiInfoDecoder, WifiInfo
 
+CONFIGURATION_PATH = '/etc/periodicpi'
+
 class ConfigReadError(Exception):
     pass
 
@@ -39,6 +41,30 @@ def index():
         wifi_list = [WifiInfo.from_dict(x) for x in scan_results['wifi_list']]
         
     return dict(scanlist=wifi_list, configmode=periodic_config_mode)
+
+@route('/status/node')
+def get_info():
+
+    #read node.json file
+    contents = {}
+    with open(CONFIGURATION_PATH+'/node.json', 'r') as f:
+        contents = json.load(f)
+
+    #add dynamic information
+    #uptime, etc
+    
+    return contents
+
+@route('/status/services')
+def get_services():
+
+    #read services.json file
+    contents = {}
+    with open(CONFIGURATION_PATH+'/services.json', 'r') as f:
+        contents = json.load(f)
+    
+    return contents
+
 
 APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 bottle.TEMPLATE_PATH.append(os.path.join(APP_ROOT, 'templates'))
