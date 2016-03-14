@@ -92,9 +92,19 @@ class Announcer(object):
         #announce services
         for service in self.service_dict:
             if service['enabled']:
+
+                #announce "text"
+                #by default put node element
+                service_text = ['node_element={}'.format(node_element)]
+
+                if 'text' in service:
+                    service_text.extend(service['text'])
+                
                 log('publishing {}'.format(service['name']), 'periodic-publish')
-                avahi_service = ZeroconfService(name='{} [{}]'.format(service['name'], node_element), port=int(service['port']),
-                                                stype=service['type'])
+                avahi_service = ZeroconfService(name='{} [{}]'.format(service['name'], node_element),
+                                                port=int(service['port']),
+                                                stype=service['type'],
+                                                text=avahi.string_array_to_txt_array(service_text))
                 avahi_service.publish()
                 self.services.append(avahi_service)
 
