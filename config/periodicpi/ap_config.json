@@ -1,0 +1,4 @@
+
+{ "interface" : "wlan0",
+  "host_ip" : "1.1.1.1"
+}

@@ -1,0 +1,11 @@
+[Unit]
+Description=PeriodicPi service announcer
+After=avahi-daemon.service
+
+[Service]
+Type=simple
+ExecStart=/usr/share/periodicpi/tools/publish_services.py start
+ExecStop=/usr/share/periodicpi/tools/publish_services.py stop
+
+[Install]
+WantedBy=multi-user.target

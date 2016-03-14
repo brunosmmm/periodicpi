@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodic Pi low-level initialization
+After=network.target
+
+[Service]
+Environment="PERIODIC_SCRIPT_PATH=/usr/share/periodicpi/scripts"
+Type=oneshot
+ExecStart=/usr/share/periodicpi/scripts/lowlevel-init.sh
+
+[Install]
+WantedBy=multi-user.target

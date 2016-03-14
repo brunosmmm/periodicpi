@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodicpi run initialization
+After=network.target avahi-daemon.service
+
+[Service]
+Environment="PERIODIC_SCRIPT_PATH=/usr/share/periodicpi/scripts"
+Type=oneshot
+ExecStart=/usr/share/periodicpi/scripts/run-init.sh
+
+[Install]
+WantedBy=multi-user.target

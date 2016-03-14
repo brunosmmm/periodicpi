@@ -1,0 +1,4 @@
+{ "interval" : 10,
+  "scan_file" : "/var/lib/periodicpi/wifi_scan.json",
+  "interface" : "wlan0"
+ }

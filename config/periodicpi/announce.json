@@ -1,0 +1,17 @@
+{
+    "services" : [
+	{
+	    "enabled" : false,
+	    "name" : "Lirc IR remote control server",
+	    "port" : 6000,
+	    "type" : "_lircd._tcp"
+	},
+	{
+	    "enabled" : true,
+	    "name" : "PeriodicPi node",
+	    "port" : 80,
+	    "type" : "_http._tcp",
+	    "text" : [] 
+	}
+    ]
+}

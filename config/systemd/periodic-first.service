@@ -1,0 +1,12 @@
+#Do stuff on first boot
+
+[Unit]
+Description=Periodic Pi Initial configuration
+ConditionPathExists=!/var/lib/periodicpi/initialsetupdone
+
+[Service]
+Environment="PERIODIC_SCRIPT_PATH=/usr/share/periodicpi/scripts"
+ExecStart=/usr/share/periodicpi/scripts/firstboot.sh
+
+[Install]
+WantedBy=multi-user.target

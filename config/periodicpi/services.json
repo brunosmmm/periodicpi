@@ -1,0 +1,16 @@
+{
+    "services" : [
+	{
+	    "enabled" : true,
+	    "service_name"  : "snapclient",
+	    "service_descr" : "SnapCast client",
+	    "port" : null
+	},
+	{
+	    "enabled" : true,
+	    "service_name"  : "lircd",
+	    "service_descr" : "IR remote output",
+	    "port" : 6000
+	}
+	]
+}

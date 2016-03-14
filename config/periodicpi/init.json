@@ -1,0 +1,6 @@
+{
+    "config_gpio" : 4,
+    "gpio_active_value" : 0,
+    "ir_out_enabled" : false,
+    "ir_out_gpio" : 22
+}
