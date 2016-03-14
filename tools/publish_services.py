@@ -83,11 +83,17 @@ class Announcer(object):
         #configure signal handler
         signal.signal(signal.SIGTERM, _handle_signal)
 
+        #get node element
+        node_element = ''
+        with open('/etc/periodicpi/node.json', 'r') as f:
+            node = json.load(f)
+            node_element = node['node_element']
+
         #announce services
         for service in self.service_dict:
             if service['enabled']:
                 log('publishing {}'.format(service['name']), 'periodic-publish')
-                avahi_service = ZeroconfService(name=service['name'], port=int(service['port']),
+                avahi_service = ZeroconfService(name='{} [{}]'.format(service['name'], node_element), port=int(service['port']),
                                                 stype=service['type'])
                 avahi_service.publish()
                 self.services.append(avahi_service)
