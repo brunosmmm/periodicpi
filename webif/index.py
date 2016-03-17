@@ -1,8 +1,9 @@
 import bottle
 import os
-from bottle import route, run, view
+from bottle import route, run, view, request
 import json
 from periodicpy.wifitools.wifiinfo import WifiInfoDecoder, WifiInfo
+from periodicpy.plugmgr import ModuleManager
 
 CONFIGURATION_PATH = '/etc/periodicpi'
 
@@ -65,11 +66,42 @@ def get_services():
     
     return contents
 
+#get active modules
+@route('/status/active_plugins')
+def report_plugins():
+    #create module list
+    mod_list = {}
+    for inst_name in modman.get_loaded_module_list():
+        mod_list[inst_name] = modman.get_instance_type(inst_name)
+
+#dump module structure
+@route('/plugins/<mod_name>/structure')
+def report_module(mod_name):
+    return modman.get_module_structure(mod_name)
+
+
+#get/set a property
+@route('/plugins/<inst_name>/<prop_name>')
+def get_set_property(inst_name, prop_name):
+    try:
+        return modman.get_module_property(inst_name, prop_name)
+    except Exception:
+        return {'status' : 'error'}
+
+#execute method
+@route('/plugins/<inst_name>/<method_name>')
+def run_method(inst_name, method_name):
+
+    method_args = request.POST['args']
+    ret = modman.call_module_method(inst_name, method_name, **method_args)
+
+    return ret
 
 APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 bottle.TEMPLATE_PATH.append(os.path.join(APP_ROOT, 'templates'))
 app = bottle.default_app()
 periodic_config_mode = False
+modman = ModuleManager('webif', '../plugins')
 
 if __name__ == "__main__":
 
@@ -78,6 +110,22 @@ if __name__ == "__main__":
         periodic_config_mode = get_periodic_config_mode()
     except ConfigReadError:
         pass
+
+    #load plugins according to configuration
+    plug_conf = {}
+    with open(CONFIGURATION_PATH+'/plugins.json', 'r') as f:
+        plug_conf = json.load(f)
+
+    for plugin in plug_conf['load_plugins']:
+        if 'args' not in plugin:
+            args = {}
+        else:
+            args = plugin['args']
+
+        try:
+            modman.load_module(plugin['id'], **args)
+        except Exception:
+            pass #for now
     
     from flup.server.fcgi import WSGIServer
     WSGIServer(app).run()

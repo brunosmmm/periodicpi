@@ -1,0 +1,8 @@
+{
+    "load_plugins" : [
+        {
+            "id" : "lircpush"
+            "args" : null
+        }
+    ]
+}
