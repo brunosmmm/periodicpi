@@ -4,6 +4,7 @@ from bottle import route, run, view, request
 import json
 from periodicpy.wifitools.wifiinfo import WifiInfoDecoder, WifiInfo
 from periodicpy.plugmgr import ModuleManager
+import logging
 
 CONFIGURATION_PATH = '/etc/periodicpi'
 
@@ -74,6 +75,8 @@ def report_plugins():
     for inst_name in modman.get_loaded_module_list():
         mod_list[inst_name] = modman.get_instance_type(inst_name)
 
+    return mod_list
+
 #dump module structure
 @route('/plugins/<mod_name>/structure')
 def report_module(mod_name):
@@ -101,10 +104,18 @@ APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 bottle.TEMPLATE_PATH.append(os.path.join(APP_ROOT, 'templates'))
 app = bottle.default_app()
 periodic_config_mode = False
-modman = ModuleManager('webif', '../plugins')
+modman = ModuleManager('webif', '/usr/share/periodicpi/plugins')
 
 if __name__ == "__main__":
 
+    #logging
+    logging.basicConfig(level=logging.DEBUG,
+                        filename='/var/log/periodicpi/webif.log',
+                        filemode='a',
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    logger = logging.getLogger('webif')
+    
     #read current mode
     try:
         periodic_config_mode = get_periodic_config_mode()
@@ -116,16 +127,21 @@ if __name__ == "__main__":
     with open(CONFIGURATION_PATH+'/plugins.json', 'r') as f:
         plug_conf = json.load(f)
 
+    modman.discover_modules()
+    
     for plugin in plug_conf['load_plugins']:
         if 'args' not in plugin:
             args = {}
         else:
-            args = plugin['args']
+            if plugin['args'] == None:
+                args = {}
+            else:
+                args = plugin['args']
 
         try:
             modman.load_module(plugin['id'], **args)
         except Exception:
-            pass #for now
+            raise #for now
     
     from flup.server.fcgi import WSGIServer
     WSGIServer(app).run()
