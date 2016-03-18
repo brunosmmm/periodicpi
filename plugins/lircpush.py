@@ -1,8 +1,9 @@
 from periodicpy.plugmgr.plugin import Module, ModuleArgument
 from periodicpy.plugmgr.plugin.method import ModuleMethod, ModuleMethodArgument
 from periodicpy.plugmgr.plugin.dtype import ModuleDataTypes
+import os
 
-LIRC_CONFIG_PATH = '/etc/lirc/lircd.conf.d/'
+LIRC_CONFIG_PATH = '/usr/share/periodicpi/user_files/lircd/'
 
 class LircPusher(Module):
     _module_desc = ModuleArgument('lircpush', 'lirc configuration pusher')
@@ -23,7 +24,7 @@ class LircPusher(Module):
 
         self._automap_methods()
 
-    def push_remote_file(self, remote_name, file_contents, overwrite_file=False):
+    def _push_remote_file(self, remote_name, file_contents, overwrite_file=False):
 
         remote_file = LIRC_CONFIG_PATH+remote_name+'.conf'
 

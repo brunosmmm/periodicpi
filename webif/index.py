@@ -92,12 +92,22 @@ def get_set_property(inst_name, prop_name):
         return {'status' : 'error'}
 
 #execute method
-@route('/plugins/<inst_name>/<method_name>')
+@route('/plugins/<inst_name>/<method_name>', method='POST')
 def run_method(inst_name, method_name):
 
-    method_args = request.POST['args']
-    ret = modman.call_module_method(inst_name, method_name, **method_args)
+    method_args = request.POST['method_args']
 
+    logger.debug('executing method "{}" of instance "{}"; args = {}'.format(method_name, inst_name, method_args))   
+
+    #make dictionary from argument string
+    arg_dict = {}
+    arg_list = method_args.split(',')
+    for arg in arg_list:
+        arg_name, arg_value = arg.split('=')
+        arg_dict[arg_name] = arg_value
+        
+    ret = modman.call_module_method(inst_name, method_name, **arg_dict)
+    
     return ret
 
 APP_ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -105,6 +115,7 @@ bottle.TEMPLATE_PATH.append(os.path.join(APP_ROOT, 'templates'))
 app = bottle.default_app()
 periodic_config_mode = False
 modman = ModuleManager('webif', '/usr/share/periodicpi/plugins')
+logger = logging.getLogger('webif')
 
 if __name__ == "__main__":
 
@@ -113,8 +124,6 @@ if __name__ == "__main__":
                         filename='/var/log/periodicpi/webif.log',
                         filemode='a',
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    logger = logging.getLogger('webif')
     
     #read current mode
     try:
@@ -142,6 +151,6 @@ if __name__ == "__main__":
             modman.load_module(plugin['id'], **args)
         except Exception:
             raise #for now
-    
+        
     from flup.server.fcgi import WSGIServer
     WSGIServer(app).run()
