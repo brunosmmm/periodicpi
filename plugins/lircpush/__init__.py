@@ -42,5 +42,5 @@ class LircPusher(Module):
 
         return True
 
-def discover_module(*args):
+def discover_module(**kwargs):
     return LircPusher
