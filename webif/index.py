@@ -45,13 +45,15 @@ def index():
         
     return dict(scanlist=wifi_list, configmode=periodic_config_mode)
 
-@route('/control/agg/register')
+@route('/control/agg/register', method='POST')
 def set_aggregator():
 
     agg_addr = request.POST['agg_addr']
     agg_port = request.POST['agg_port']
     handler_name = request.POST['handler_name']
     handler_path = request.POST['handler_path']
+
+    return {'status' : 'ok'}
 
 @route('/status/node')
 def get_info():
