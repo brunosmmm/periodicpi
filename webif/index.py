@@ -5,6 +5,7 @@ import json
 from periodicpy.wifitools.wifiinfo import WifiInfoDecoder, WifiInfo
 from periodicpy.plugmgr import ModuleManager
 import logging
+import pyjsonrpc
 
 CONFIGURATION_PATH = '/etc/periodicpi'
 
@@ -43,6 +44,14 @@ def index():
         wifi_list = [WifiInfo.from_dict(x) for x in scan_results['wifi_list']]
         
     return dict(scanlist=wifi_list, configmode=periodic_config_mode)
+
+@route('/control/agg/register')
+def set_aggregator():
+
+    agg_addr = request.POST['agg_addr']
+    agg_port = request.POST['agg_port']
+    handler_name = request.POST['handler_name']
+    handler_path = request.POST['handler_path']
 
 @route('/status/node')
 def get_info():
@@ -110,6 +119,9 @@ def run_method(inst_name, method_name):
     
     return ret
 
+def aggregator_interrupt(**kwargs):
+    pass
+
 APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 bottle.TEMPLATE_PATH.append(os.path.join(APP_ROOT, 'templates'))
 app = bottle.default_app()
@@ -135,6 +147,9 @@ if __name__ == "__main__":
     plug_conf = {}
     with open(CONFIGURATION_PATH+'/plugins.json', 'r') as f:
         plug_conf = json.load(f)
+
+    #install custom handlers
+    modman.install_custom_method('ppnode.aggregator_interrupt', aggregator_interrupt)
 
     modman.discover_modules()
     
