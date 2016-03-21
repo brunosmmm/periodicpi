@@ -53,6 +53,8 @@ def set_aggregator():
     handler_name = request.POST['handler_name']
     handler_path = request.POST['handler_path']
 
+    logger.debug('registering aggregator interrupt "{}" @ {}:{}/{}'.format(handler_name, agg_addr, agg_port, handler_path))
+    
     return {'status' : 'ok'}
 
 @route('/status/node')
