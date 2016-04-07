@@ -38,6 +38,6 @@ def discover_module(**kwargs):
     class LircPusherProxy(LircPusher):
         _, _methods, _propertues =\
             Module.build_module_structure_from_file(os.path.join(kwargs['plugin_path'],
-                                                                 'lircpush,json'))
+                                                                 'lircpush.json'))
 
     return LircPusherProxy
