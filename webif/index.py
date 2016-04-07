@@ -3,7 +3,7 @@ import os
 from bottle import route, run, view, request
 import json
 from periodicpy.wifitools.wifiinfo import WifiInfoDecoder, WifiInfo
-from periodicpy.plugmgr import ModuleManager
+from viscum import ModuleManager
 import logging
 import pyjsonrpc
 
@@ -130,7 +130,7 @@ APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 bottle.TEMPLATE_PATH.append(os.path.join(APP_ROOT, 'templates'))
 app = bottle.default_app()
 periodic_config_mode = False
-modman = ModuleManager('webif', '/usr/share/periodicpi/plugins')
+modman = ModuleManager('webif', '/usr/share/periodicpi/plugins', '/usr/share/periodicpi/scripts')
 logger = logging.getLogger('webif')
 
 if __name__ == "__main__":
