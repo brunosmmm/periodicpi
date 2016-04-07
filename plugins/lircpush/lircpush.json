@@ -1,0 +1,30 @@
+{
+    "module_properties": {},
+    "module_methods": {
+        "push_remote_file": {
+            "method_args": {
+                "remote_name": {
+                    "arg_required": true,
+                    "arg_desc": "Remote name",
+                    "arg_dtype": null
+                },
+                "file_contents": {
+                    "arg_required": true,
+                    "arg_desc": "LIRC remote control description",
+                    "arg_dtype": null
+                },
+                "overwrite_file": {
+                    "arg_required": false,
+                    "arg_desc": "Overwrite file if already existent",
+                    "arg_dtype": null
+                }
+            },
+            "method_return": null,
+            "method_desc": "Push remote control description"
+        }
+    },
+    "module_desc": {
+        "module_type": "lircpush",
+        "module_desc": "lirc configuration pusher"
+    }
+}
